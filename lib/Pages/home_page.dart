@@ -1,7 +1,5 @@
 import 'package:easy_checkout/Pages/catalog_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,7 +12,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: buildDrawer(),
       appBar: AppBar(
         title: const Text("Easy Checkout", style: TextStyle(
           color: Colors.white,
@@ -47,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                       backgroundColor: Colors.teal,
                       foregroundColor: Colors.white
                     ),
-                    onPressed: () => Navigator.of(context).pushReplacement(
+                    onPressed: () => Navigator.of(context).push(
                       MaterialPageRoute( builder: (_) => const CatalogPage() )
                     ),
                     child: const Row(
@@ -70,18 +67,6 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         )
-      ),
-    );
-  }
-
-  Widget buildDrawer() {
-    return const Drawer(
-      backgroundColor: Colors.teal,
-      child: Column(
-        children: [
-          Text("Hola mundo"),
-          Text("Este es un drawer")
-        ],
       ),
     );
   }

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:easy_checkout/Components/my_drawer.dart';
 
-class CatalogPage extends StatefulWidget {
-  const CatalogPage({super.key});
+class ShopBagPage extends StatefulWidget {
+  const ShopBagPage({super.key});
 
   @override
-  State<CatalogPage> createState() => _CatalogPageState();
+  State<ShopBagPage> createState() => __ShopBagPageState();
 }
 
-class _CatalogPageState extends State<CatalogPage> {
+class __ShopBagPageState extends State<ShopBagPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  const Text("Productos"),
+        title:  const Text("Shop Bag"),
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       drawer: const MyDrawer(),

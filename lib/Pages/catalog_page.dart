@@ -11,30 +11,62 @@ class CatalogPage extends StatefulWidget {
 class _CatalogPageState extends State<CatalogPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title:  const Text("Productos"),
-        backgroundColor: Theme.of(context).colorScheme.surface,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title:  const Text("Productos"),
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          bottom: buildTabMenu()
+        ),
+        drawer: const MyDrawer(),
+        body: TabBarView(
+          children: [
+            
+             Container(
+              child: const Center( 
+                child: Text("Contenidon 1")
+              ),
+            ),
+
+            Container(
+              child: const Center(child: Text("Contenidon 2")),
+            ),
+
+            Container(
+              child: const Center(child: Text("Contenidon 3")),
+            ),
+
+          ],
+        ),
       ),
-      drawer: const MyDrawer(),
-      body: const Stack(
-        children: [
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.star),
-                SizedBox( height: 10),
-                Text( "Hola mundo",
-                  style: TextStyle(
-                    fontSize: 24.0,
-                  ),
-                ),
-              ],
-            )
-          )
-        ],
-      )
+    );
+  }
+
+  TabBar buildTabMenu(){
+    return const TabBar(
+      tabs: [
+        Tab(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.0),
+            child: Text("Categoria 1"),
+          ),
+        ),
+
+        Tab(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.0),
+            child: Text("Categoria 2"),
+          ),
+        ),
+
+        Tab(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.0),
+            child: Text("Categoria 3"),
+          ),
+        )
+      ],
     );
   }
 }

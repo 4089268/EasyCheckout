@@ -3,6 +3,7 @@ import 'package:easy_checkout/Components/card_product.dart';
 import 'package:easy_checkout/data/context.dart';
 import 'package:easy_checkout/models/product.dart';
 import 'package:easy_checkout/Components/my_drawer.dart';
+import 'package:provider/provider.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({super.key});
@@ -13,45 +14,35 @@ class CatalogPage extends StatefulWidget {
 
 class _CatalogPageState extends State<CatalogPage> {
 
-  final EasyCheckoutContext easyCheckoutContext = EasyCheckoutContext();
-
-  late SliverGridDelegate sliverGridDelegate;
-
   @override
   Widget build(BuildContext context) {
-    buildSliverGridDelegate(context);
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title:  const Text("Productos"),
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          bottom: buildTabMenu()
-        ),
-        drawer: const MyDrawer(),
-        body: TabBarView(
-          children: [
-            
-            buildGrid(context, 0),
 
-            buildGrid(context, 1),
+    return Consumer<EasyCheckoutContext>( builder: (context, easyCheckoutContext, child){
+        return DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: AppBar(
+              title:  const Text("Productos"),
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              bottom: buildTabMenu()
+            ),
+            drawer: const MyDrawer(),
+            body: TabBarView(
+              children: [
+                
+                buildGrid(context, easyCheckoutContext, 0),
 
-            buildGrid(context, 2)
+                buildGrid(context, easyCheckoutContext, 1),
 
-          ],
-        ),
-      ),
-    );
-  }
+                buildGrid(context, easyCheckoutContext, 2)
 
-  void buildSliverGridDelegate(BuildContext context){
-    sliverGridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 3,
-      childAspectRatio: MediaQuery.of(context).size.width / ( MediaQuery.of(context).size.height / 1),
-      crossAxisSpacing: 20.0,
-      mainAxisSpacing: 20.0
-    );
-  }
+              ],
+            ),
+          ),
+        );
+    });
+
+  } 
 
   TabBar buildTabMenu(){
     return const TabBar(
@@ -80,37 +71,36 @@ class _CatalogPageState extends State<CatalogPage> {
     );
   }
 
-  Widget buildGrid(BuildContext context, int indexTab){
+  Widget buildGrid(BuildContext context, EasyCheckoutContext easyCheckoutContext, int indexTab){
 
-    List<Product> _products = [];
+    List<Product> productsList = [];
     
     switch( indexTab){
       case 0:
-        _products = easyCheckoutContext.groceryProducts.take(20).toList();
+        productsList = easyCheckoutContext.groceryProducts.take(20).toList();
         break;
 
       case 1:
-        _products = easyCheckoutContext.groceryProducts.skip(20).take(20).toList();
+        productsList = easyCheckoutContext.groceryProducts.skip(20).take(20).toList();
         break;
 
       case 2:
-        _products = easyCheckoutContext.groceryProducts.skip(40).take(10).toList();
+        productsList = easyCheckoutContext.groceryProducts.skip(40).take(10).toList();
         break;
 
     }
 
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
-          itemCount: _products.length,
-          gridDelegate: sliverGridDelegate,
-          itemBuilder: (context, index){
-            final _product = _products[index];
-            return CardProduct(_product);
-          }
-        ),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child:  GridView.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 12.0,
+        crossAxisSpacing: 12.0,
+        childAspectRatio: .75,
+        children: [
+          ...productsList.map<Widget>( (product) => CardProduct(product) )
+        ]
+      )
     );
     
   }

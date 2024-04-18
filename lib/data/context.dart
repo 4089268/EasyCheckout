@@ -1,6 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:easy_checkout/models/product.dart';
 
-class EasyCheckoutContext {
+class EasyCheckoutContext with ChangeNotifier, DiagnosticableTreeMixin{
 
   List<Product> groceryProducts = [
     const Product(

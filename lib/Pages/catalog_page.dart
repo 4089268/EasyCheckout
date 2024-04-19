@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_checkout/Components/card_product.dart';
-import 'package:easy_checkout/data/context.dart';
+import 'package:easy_checkout/data/easycheckout_context.dart';
 import 'package:easy_checkout/models/product.dart';
 import 'package:easy_checkout/Components/my_drawer.dart';
-import 'package:provider/provider.dart';
+import 'package:easy_checkout/Components/basket_button.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({super.key});
@@ -24,7 +25,14 @@ class _CatalogPageState extends State<CatalogPage> {
             appBar: AppBar(
               title:  const Text("Productos"),
               backgroundColor: Theme.of(context).colorScheme.surface,
-              bottom: buildTabMenu()
+              bottom: buildTabMenu(),
+              actions: [
+                ShoppingBagButton(
+                  onPressed: ()=>{
+                    // TODO: Redirect to order view
+                  }
+                )
+              ],
             ),
             drawer: const MyDrawer(),
             body: TabBarView(
@@ -93,12 +101,16 @@ class _CatalogPageState extends State<CatalogPage> {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child:  GridView.count(
-        crossAxisCount: 2,
+        crossAxisCount: 4,
         mainAxisSpacing: 12.0,
         crossAxisSpacing: 12.0,
         childAspectRatio: .75,
         children: [
-          ...productsList.map<Widget>( (product) => CardProduct(product) )
+          ...productsList.map<Widget>( (product) => CardProduct(
+            product,
+            productIsSelected: easyCheckoutContext.productIsSelected(product.id),
+            ammountChanged: (ammount) => easyCheckoutContext.addProduct(product, ammount),
+          ))
         ]
       )
     );

@@ -109,7 +109,7 @@ class _CatalogPageState extends State<CatalogPage> {
           ...productsList.map<Widget>( (product) => CardProduct(
             product,
             productIsSelected: easyCheckoutContext.productIsSelected(product.id),
-            ammountChanged: (ammount) => easyCheckoutContext.addProduct(product, ammount),
+            ammountChanged: (ammount) => easyCheckoutContext.changeProductAmmount(product, ammount),
           ))
         ]
       )

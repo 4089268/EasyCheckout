@@ -364,13 +364,14 @@ class EasyCheckoutContext with ChangeNotifier, DiagnosticableTreeMixin{
   }
 
 
-  void addProduct( Product product, int ammount){
+  void changeProductAmmount( Product product, int ammount){
 
     var productFounded = _invoiceItems.where((e) => e.product.id == product.id).isNotEmpty;
 
     // Remove produdct
     if( productFounded && ammount == 0 ){
-      _invoiceItems.removeWhere((element) => element.product.id == product.id);
+      _invoiceItems.remove( _invoiceItems.where((element) => (element.product.id == product.id)).first );
+      notifyListeners();
       return;
     }
 
@@ -381,7 +382,7 @@ class EasyCheckoutContext with ChangeNotifier, DiagnosticableTreeMixin{
       _invoiceItems.add( InvoiceItem( product, "name", ammount ));
     }
 
-    debugPrint('(-) List product changed ${_invoiceItems.length}' );
+    notifyListeners();
   }
 
   String labelTotalProducts(){

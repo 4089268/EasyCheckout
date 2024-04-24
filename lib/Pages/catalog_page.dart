@@ -5,6 +5,7 @@ import 'package:easy_checkout/data/easycheckout_context.dart';
 import 'package:easy_checkout/models/product.dart';
 import 'package:easy_checkout/Components/my_drawer.dart';
 import 'package:easy_checkout/Components/basket_button.dart';
+import 'package:easy_checkout/Pages/order_page.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({super.key});
@@ -28,9 +29,7 @@ class _CatalogPageState extends State<CatalogPage> {
               bottom: buildTabMenu(),
               actions: [
                 ShoppingBagButton(
-                  onPressed: ()=>{
-                    // TODO: Redirect to order view
-                  }
+                  onPressed: ()=> navigateToOrderPage(context, easyCheckoutContext)
                 )
               ],
             ),
@@ -115,6 +114,25 @@ class _CatalogPageState extends State<CatalogPage> {
       )
     );
     
+  }
+
+  void navigateToOrderPage(BuildContext context, EasyCheckoutContext easyCheckoutContext){
+    if( easyCheckoutContext.invoiceItems.isNotEmpty ){
+      Navigator.of(context).push( MaterialPageRoute(builder: (_) => const OrderPage()) );
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text("No hay elementos seleccionado",
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+              fontWeight: FontWeight.bold
+            ),  
+          )
+        )
+      );
+    }
   }
 
 }

@@ -24,7 +24,7 @@ class CardProduct extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Image.asset("assets/img/p2.jpg", fit: BoxFit.fitHeight),
+              child: Image.asset("assets/img/image_not_available_sm.png", fit: BoxFit.fitHeight),
             )
           ),
 

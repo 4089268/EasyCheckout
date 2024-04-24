@@ -6,6 +6,8 @@ class EasyCheckoutContext with ChangeNotifier, DiagnosticableTreeMixin{
 
   final List<InvoiceItem> _invoiceItems = [];
 
+  List<InvoiceItem> get invoiceItems => _invoiceItems;
+
   late List<Product> groceryProducts;
 
   EasyCheckoutContext(){

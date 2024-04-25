@@ -117,13 +117,10 @@ class _CatalogPageState extends State<CatalogPage> {
   }
 
   void navigateToOrderPage(BuildContext context, EasyCheckoutContext easyCheckoutContext){
-    if( easyCheckoutContext.invoiceItems.isNotEmpty ){
-      Navigator.of(context).push( MaterialPageRoute(builder: (_) => const OrderPage()) );
-    }else{
-      ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text("No hay elementos seleccionado",
+          backgroundColor: Colors.yellow,
+          content: Text("No Implementado",
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
@@ -132,7 +129,23 @@ class _CatalogPageState extends State<CatalogPage> {
           )
         )
       );
-    }
+
+    // if( easyCheckoutContext.invoiceItems.isNotEmpty ){
+    //   Navigator.of(context).push( MaterialPageRoute(builder: (_) => const OrderPage()) );
+    // }else{
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       backgroundColor: Colors.red,
+    //       content: Text("No hay elementos seleccionado",
+    //         style: TextStyle(
+    //           fontSize: 18,
+    //           color: Colors.white,
+    //           fontWeight: FontWeight.bold
+    //         ),  
+    //       )
+    //     )
+    //   );
+    // }
   }
 
 }

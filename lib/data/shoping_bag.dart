@@ -17,39 +17,38 @@ class ShopingBag extends ChangeNotifier {
 
   void addItem( Product product, int ammount, String? comments  ){
 
-    // Validate if already is stored and update
-    if( _items.values.map((e) => e.product.id).contains(product.id) ){
-      var _invoiceItemId = _items.values.where((element) => element.product.id == product.id).first.id;
-      _items.update( _invoiceItemId, (value) => InvoiceItem (
-        value.product,
-        value.name,
-        value.amount + ammount,
-        comments: comments
-      ));
+    // // Validate if already is stored and update
+    // if( _items.values.map((e) => e.product.id).contains(product.id) ){
+    //   var _invoiceItemId = _items.values.where((element) => element.product.id == product.id).first.id;
+    //   _items.update( _invoiceItemId, (value) => InvoiceItem (
+    //     value.product,
+    //     value.name,
+    //     value.amount + ammount,
+    //     comments: comments
+    //   ));
 
-    }else{
-      var invoiceItem = InvoiceItem( product, product.name, ammount, comments: comments );
-      _items.putIfAbsent( invoiceItem.id, () => invoiceItem );
-    }
+    // }else{
+    //   var invoiceItem = InvoiceItem( product, product.name, ammount, comments: comments );
+    //   _items.putIfAbsent( invoiceItem.id, () => invoiceItem );
+    // }
 
   }
 
   void updateAmmount( Product product, int newAmmount){
-    var _invoiceItem = _items.values.where((element) => element.product.id == product.id).firstOrNull;
-    if(_invoiceItem != null){
+    // var _invoiceItem = _items.values.where((element) => element.product.id == product.id).firstOrNull;
+    // if(_invoiceItem != null){
 
-      if( newAmmount <= 0 ){
-        _items.remove( _invoiceItem.id );
-        return;
-      }
+    //   if( newAmmount <= 0 ){
+    //     _items.remove( _invoiceItem.id );
+    //     return;
+    //   }
 
-      _items.update( _invoiceItem.id, (value) => InvoiceItem(
-        product,
-        product.name,
-        newAmmount
-      ));
-    }
-
+    //   _items.update( _invoiceItem.id, (value) => InvoiceItem(
+    //     product,
+    //     product.name,
+    //     newAmmount
+    //   ));
+    // }
   }
   
 }

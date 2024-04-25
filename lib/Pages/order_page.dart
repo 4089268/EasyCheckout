@@ -46,7 +46,7 @@ class __OrderPageState extends State<OrderPage> {
                           ),
                         ),
                       ),
-
+          
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -123,7 +123,7 @@ class __OrderPageState extends State<OrderPage> {
                   crossAxisSpacing: 4.0,
                   mainAxisSpacing: 4.0,
                   children:[
-                    ...easyCheckoutContext.invoiceItems.map<Widget>( (invoiceItem) => InvoiceItemCard(invoiceItem) )
+                    // ...easyCheckoutContext.invoiceItems.map<Widget>( (invoiceItem) => InvoiceItemCard(invoiceItem) )
                   ],
                 ),
               ),

@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_checkout/models/invoice_item.dart';
 import 'package:easy_checkout/data/easycheckout_context.dart';
 
 class OrderPage extends StatefulWidget {
@@ -121,75 +118,16 @@ class __OrderPageState extends State<OrderPage> {
               ),
 
               Expanded(
-                child: ListView(
-                  children: const [
-
-                    InvoiceItemCard(),
-                    InvoiceItemCard(),
-                    InvoiceItemCard(),
-                    InvoiceItemCard(),
-                    InvoiceItemCard(),
-                    InvoiceItemCard(),
-
-                    
-                    
-
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 4.0,
+                  mainAxisSpacing: 4.0,
+                  children:[
+                    ...easyCheckoutContext.invoiceItems.map<Widget>( (invoiceItem) => InvoiceItemCard(invoiceItem) )
                   ],
                 ),
               ),
 
-              Expanded(
-                child: Card(
-                  child: DataTable(
-                    columns: const [
-                      DataColumn( label: Text("Producto") ),
-                      DataColumn( label: Text("Preci Unit."), numeric: true ),
-                      DataColumn( label: Text("Cantidad"), numeric: true ),
-                      DataColumn( label: Text("Total"), numeric: true ),
-                    ],
-                    rows: [
-                      ...easyCheckoutContext.invoiceItems.map<DataRow>((e){
-                        return DataRow(
-                          cells:[
-                            DataCell( 
-                              Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Icon(Icons.local_grocery_store),
-                                  ),
-                                  Text(e.product.name)
-                                ],
-                              )
-                            ),
-                            DataCell( Text(e.product.price.toString()) ),
-                            DataCell(
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.remove),
-                                    onPressed: ()=>{}
-                                  ),
-
-                                  Text(e.amount.toString()),
-
-                                  IconButton(
-                                    icon: const Icon(Icons.add),
-                                    onPressed: ()=>{},
-                                  )
-                                ],
-                              )
-                            ),
-                            DataCell( Text(e.total.toStringAsPrecision(3)) ),
-                          ]
-                        );
-                      })
-                    ],
-                  ),
-                )
-                
-              ),
             ],
           ),
         );
@@ -201,36 +139,50 @@ class __OrderPageState extends State<OrderPage> {
 
 
 class InvoiceItemCard extends StatelessWidget {
-  const InvoiceItemCard({super.key});
+  final InvoiceItem invoiceItem;
+  const InvoiceItemCard( this.invoiceItem, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.width * .4,
       padding: const EdgeInsets.all(12.0),
-      margin: const EdgeInsets.only(bottom: 12.0),
-      decoration: const BoxDecoration(
-        border: Border( bottom: BorderSide(width: 1, color: Colors.black12))
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.black26,
+          width: 1.0
+        ),
+        borderRadius: BorderRadius.circular( 12.0)
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width * .4,
-            padding: const EdgeInsets.all(4.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0)
+          
+          // Image
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0)
+              ),
+              child: Image.asset("assets/img/p1.jpg",
+                fit: BoxFit.contain
+              )
             ),
-            child: Image.asset("assets/img/p1.jpg",
-              fit: BoxFit.contain
-            )
           ),
 
-          const Expanded(
+          // Product Details
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Text("** datos del producto"),
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text( invoiceItem.product.name, style: const TextStyle(fontSize: 24.0 ) ),
+                  Text( invoiceItem.amount.toString(), style: const TextStyle(fontSize: 22.0 ) ),
+                ],
+              ),
             )
           )
         ],

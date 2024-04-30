@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_checkout/data/easycheckout_context.dart';
+import 'package:easy_checkout/data/invoice_provider.dart';
 
 class ShoppingBagButton extends StatelessWidget {
   
@@ -11,7 +11,7 @@ class ShoppingBagButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Consumer<EasyCheckoutContext>( builder: (context, easyCheckoutContext, child){
+    return Consumer<InvoiceProvider>( builder: (context, invoiceProvider, child){
 
       return TextButton(
         onPressed: () => onPressed(),
@@ -32,7 +32,7 @@ class ShoppingBagButton extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: Colors.white
                 ),
-                child:  Text( easyCheckoutContext.labelTotalProducts() ,
+                child:  Text( invoiceProvider.labelTotalProducts,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,

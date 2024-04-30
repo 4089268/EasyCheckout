@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_checkout/data/invoice_provider.dart';
 import 'package:easy_checkout/Components/card_product.dart';
 import 'package:easy_checkout/data/easycheckout_context.dart';
 import 'package:easy_checkout/models/product.dart';
 import 'package:easy_checkout/Components/my_drawer.dart';
 import 'package:easy_checkout/Components/basket_button.dart';
-import 'package:easy_checkout/Pages/order_page.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({super.key});
@@ -19,17 +19,17 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   Widget build(BuildContext context) {
 
-    return Consumer<EasyCheckoutContext>( builder: (context, easyCheckoutContext, child){
+    return Consumer<InvoiceProvider>( builder: (context, invoiceProvider, child){
         return DefaultTabController(
           length: 3,
           child: Scaffold(
             appBar: AppBar(
-              title:  const Text("Productos"),
+              title:  Text("Ticket: ${ invoiceProvider.invoice!.name }" ),
               backgroundColor: Theme.of(context).colorScheme.surface,
               bottom: buildTabMenu(),
               actions: [
                 ShoppingBagButton(
-                  onPressed: ()=> navigateToOrderPage(context, easyCheckoutContext)
+                  onPressed: ()=> navigateToOrderPage(context, invoiceProvider)
                 )
               ],
             ),
@@ -37,11 +37,11 @@ class _CatalogPageState extends State<CatalogPage> {
             body: TabBarView(
               children: [
                 
-                buildGrid(context, easyCheckoutContext, 0),
+                buildGrid(context, 0),
 
-                buildGrid(context, easyCheckoutContext, 1),
+                buildGrid(context, 1),
 
-                buildGrid(context, easyCheckoutContext, 2)
+                buildGrid(context, 2)
 
               ],
             ),
@@ -78,21 +78,21 @@ class _CatalogPageState extends State<CatalogPage> {
     );
   }
 
-  Widget buildGrid(BuildContext context, EasyCheckoutContext easyCheckoutContext, int indexTab){
+  Widget buildGrid(BuildContext context, int indexTab){
 
     List<Product> productsList = [];
     
     switch( indexTab){
       case 0:
-        productsList = easyCheckoutContext.groceryProducts.take(20).toList();
+        productsList = context.watch<EasyCheckoutContext>().groceryProducts.take(20).toList();
         break;
 
       case 1:
-        productsList = easyCheckoutContext.groceryProducts.skip(20).take(20).toList();
+        productsList = context.watch<EasyCheckoutContext>().groceryProducts.skip(20).take(20).toList();
         break;
 
       case 2:
-        productsList = easyCheckoutContext.groceryProducts.skip(40).take(10).toList();
+        productsList = context.watch<EasyCheckoutContext>().groceryProducts.skip(40).take(10).toList();
         break;
 
     }
@@ -107,8 +107,8 @@ class _CatalogPageState extends State<CatalogPage> {
         children: [
           ...productsList.map<Widget>( (product) => CardProduct(
             product,
-            productIsSelected: easyCheckoutContext.productIsSelected(product.id),
-            ammountChanged: (ammount) => easyCheckoutContext.changeProductAmmount(product, ammount),
+            productIsSelected: context.watch<InvoiceProvider>().productIsSelected(product.id),
+            ammountChanged: (ammount) => handleAddProduct(context, product, ammount),
           ))
         ]
       )
@@ -116,7 +116,7 @@ class _CatalogPageState extends State<CatalogPage> {
     
   }
 
-  void navigateToOrderPage(BuildContext context, EasyCheckoutContext easyCheckoutContext){
+  void navigateToOrderPage(BuildContext context, InvoiceProvider invoiceProvider){
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.yellow,
@@ -148,4 +148,7 @@ class _CatalogPageState extends State<CatalogPage> {
     // }
   }
 
+  void handleAddProduct(BuildContext context, product, int ammount){
+    context.read<InvoiceProvider>().addProduct(product, ammount);
+  }
 }

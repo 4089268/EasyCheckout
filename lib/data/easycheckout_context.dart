@@ -1,17 +1,13 @@
-import 'dart:ui';
-
-import 'package:easy_checkout/models/invoice.dart';
 import 'package:flutter/foundation.dart';
-import 'package:easy_checkout/models/invoice_item.dart';
+import 'package:easy_checkout/models/invoice.dart';
 import 'package:easy_checkout/models/user.dart';
 import 'package:easy_checkout/models/product.dart';
 
 class EasyCheckoutContext with ChangeNotifier {
 
   User currentUser = User(name: "Juan Salvador");
-  String? currentInvoiceId = ""; 
+  
   final List<Invoice> _invoices = [];
-
   List<Invoice> get invoices => _invoices;
 
   late List<Product> groceryProducts;
@@ -371,51 +367,20 @@ class EasyCheckoutContext with ChangeNotifier {
     ];
   }
 
-
-  void addInvoice(){
-    
+  String addInvoice(){
     // Create new invoice
-    var newInvoice = Invoice(user: currentUser);
+    // TODO: Calculate ticket number or calcula name
+    
+    var newInvoice = Invoice(user: currentUser, name: "Ticket 666");
     _invoices.add( newInvoice );
-    
-    currentInvoiceId = newInvoice.id;
-    
-  }
-
-
-  void changeProductAmmount( Product product, int ammount){
-
-    
-
-    // var productFounded = _invoiceItems.where((e) => e.product.id == product.id).isNotEmpty;
-
-    // // Remove produdct
-    // if( productFounded && ammount == 0 ){
-    //   _invoiceItems.remove( _invoiceItems.where((element) => (element.product.id == product.id)).first );
-    //   notifyListeners();
-    //   return;
-    // }
-
-    // // Add the product
-    // if( productFounded ){
-    //   _invoiceItems.where((invoice) => invoice.product.id == product.id).first.amount += ammount;
-    // }else{
-    //   _invoiceItems.add( InvoiceItem( product, "name", ammount ));
-    // }
 
     notifyListeners();
-  }
 
-  String labelTotalProducts(){
-    return "+9";
-    // return _invoiceItems.length > 9
-    //   ? "+9"
-    //   : _invoiceItems.length.toString();
+    return newInvoice.id;
   }
-
-  bool productIsSelected( int productId ){
-    return true;
-    // return _invoiceItems.where((element) => element.product.id == productId).isNotEmpty;
+  
+  Invoice? getInvoiceById( String invoiceId){
+    return _invoices.firstWhere((element) => element.id == invoiceId);
   }
 
 }
